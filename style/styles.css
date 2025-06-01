@@ -1,0 +1,30 @@
+body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+#passage {
+    display: block;
+    margin: auto;
+    padding: 20px 10px;
+    width: 80%;
+    height: auto;
+    
+}
+
+#typearea {
+    display: block;
+    margin: auto;
+    padding: 20px 10px;
+    width: 80%;
+    height: auto;
+}
+
+.correct {
+    color: gray;
+}
+
+.wrong {
+    color: brown;
+}
