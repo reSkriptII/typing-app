@@ -12,8 +12,18 @@
 
 <body>
     <main>
+        <div class="status-bar">
+            <div class="card">
+                <p>accuracy</p>
+                <p class="accuracy-display"></p>
+            </div>
+            <div class="card">
+                <p>error</p>
+                <p class="error-display"></p>
+            </div>
+        </div>
         <div id="passage">placeholder</div>
-        <textarea id="typearea"></textarea>
+        <div id="typearea" onclick="this.focus()" tabindex="1"></div>
         <pre id="debug"></pre>
     </main>
 </body>

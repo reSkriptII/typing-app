@@ -1,19 +1,29 @@
 import {session} from "./session.js";
 
-let passage = document.getElementById("passage");
-let typearea = document.getElementById("typearea");
+const domElements = {
+    passage: document.getElementById("passage"),
+    typearea: document.getElementById("typearea"),
+    accuracyDisplays: document.querySelectorAll('.accuracy-display'),
+    errorDisplays: document.querySelectorAll('.error-display'),
+}
 
-session.setNewPassage('example message that should show on div');
-setPassageDisplay(session.getHighlightElement());
+cleanSetupApp(session, domElements);
 
-let debugDiv = document.getElementById('debug');
+domElements.typearea.onpaste = () => false;
+domElements.typearea.addEventListener('keydown', (event) => {
+    let key = event.key;
+    if (key in ['Control', 'Alt', 'Shift', 'Meta']) {
+        return;
+    }
 
-typearea.onpaste = () => false;
-typearea.addEventListener('keydown', (event) => {
-    session.update(event.key);
-    setPassageDisplay(session.getHighlightElement());
-    typearea.innerHTML = session._typedPassage;
-    event.preventDefault()
+    if(key.length === 1 || key === 'Backspace')  {
+        session.update(event.key);
+    
+        setPassageDisplay(session.getHighlightElement());
+        updateStatusBar(session, domElements);
+        typearea.innerHTML = session._typedPassage;
+    }
+    
 });
 
 function setPassageDisplay(element) {
@@ -21,5 +31,41 @@ function setPassageDisplay(element) {
     passage.append(element);
 }
 
+function cleanSetupApp(session, domElements) {
+    session.setNewPassage('example message that should show on div');
+    setPassageDisplay(session.getHighlightElement());
+
+    session.statistic.totalLetter = 0;
+    session.statistic.correctLetter = 0;
+    session.statistic.wrongLetter = 0;
+
+    updateStatusBar(session, domElements);
+}
+
+function updateStatusBar(session, domElements) {
+    let stat = session.statistic;
+    if (stat.totalLetter <= 0) {
+        let a = domElements.errorDisplays;
+        console.log(a)
+        a.forEach((element) => {
+            element.innerHTML = 0;
+        });
+
+        domElements.accuracyDisplays.forEach((element) => {
+            element.innerHTML = '100%';
+        });
+
+        return;
+    }
+
+    domElements.errorDisplays.forEach((element) => {
+        element.innerHTML = stat.wrongLetter;
+    });
+
+    domElements.accuracyDisplays.forEach((element) => {
+        element.innerHTML = Math.round(100 * stat.correctLetter / stat.totalLetter) + '%';
+    });    
+}
+    
 
 

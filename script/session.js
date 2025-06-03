@@ -21,6 +21,7 @@ export let session = {
     },
 
     update(key) {
+        console.log(key)
         if (key === this._targetPassage[this._cursorIndex]) { // correct key
             this._addTypedLetter(key, true);
 
@@ -30,9 +31,8 @@ export let session = {
         } else if (key === "Backspace") {
             if (!this.setting.allowBackSpace) return;
             if (this.setting.spaceAsSeperator) {
-                console.log(this._typedPassage)
+      
                 let typedWordCount = this._typedPassage.split(" ").length;
-                console.log(`backspace in space. cursor: ${this._cursorIndex}, wordstartindex: ${getWordStartIndex(typedWordCount - 1, this._targetPassage)}`)
                 if (this._cursorIndex <= getWordStartIndex(typedWordCount -1, this._targetPassage)) {
                     return;
                 }
@@ -60,13 +60,11 @@ export let session = {
                 let typedWordCount = session._typedPassage.trim().split(' ').length;
                 let nexWordStartIndex = getWordStartIndex(typedWordCount, session._targetPassage);
                 session._cursorIndex = nexWordStartIndex;
-                console.log(`cursor: ${session._cursorIndex}`)
             }
         }
     },
 
     getHighlightElement() {
-        console.log('highlight start')
         let highlighted = new DocumentFragment();
 
         if (!this._typedPassage) {
@@ -81,7 +79,7 @@ export let session = {
             let typedWordList = this._typedPassage.split(' ');
 
             let typedWordCount = Math.min(targetWordList.length, typedWordList.length);
-            console.log(typedWordCount);
+
             // highlight words before current
             for (let i = 0; i < typedWordCount - 1; ++i) {
                 appendHiglightLinear(typedWordList[i], targetWordList[i], true);
@@ -179,4 +177,3 @@ export let session = {
         this._typedPassage = this._typedPassage.slice(0, -1); 
     },
 }
-
