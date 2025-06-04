@@ -13,6 +13,11 @@ body {
     flex-flow: column;
 }
 
+.card {
+    display: inline-block;
+    width: 20%;
+}
+
 #passage {
     display: block;
     margin: auto;

@@ -5,11 +5,22 @@ const domElements = {
     typearea: document.getElementById("typearea"),
     accuracyDisplays: document.querySelectorAll('.accuracy-display'),
     errorDisplays: document.querySelectorAll('.error-display'),
+    wpmDisplays: document.querySelectorAll('.wpm-display'),
 }
 
 cleanSetupApp(session, domElements);
 
 domElements.typearea.onpaste = () => false;
+
+let wpmInteval;
+domElements.typearea.addEventListener('keydown', startTimer);
+function startTimer() {
+    console.log('startTimer')
+    session.start();
+    wpmInteval = setInterval(() => updateWPM(session, domElements), 500);
+    domElements.typearea.removeEventListener('keydown', startTimer);
+}
+
 domElements.typearea.addEventListener('keydown', (event) => {
     let key = event.key;
     if (key in ['Control', 'Alt', 'Shift', 'Meta']) {
@@ -22,9 +33,16 @@ domElements.typearea.addEventListener('keydown', (event) => {
         setPassageDisplay(session.getHighlightElement());
         updateStatusBar(session, domElements);
         typearea.innerHTML = session._typedPassage;
+
+        // if (session.isPassageComplete()) {
+        //     // TODO: session.setNewPassage();
+        // }
     }
     
 });
+
+// ************************************************************
+// helper function
 
 function setPassageDisplay(element) {
     passage.innerHTML = '';
@@ -43,29 +61,34 @@ function cleanSetupApp(session, domElements) {
 }
 
 function updateStatusBar(session, domElements) {
+    
     let stat = session.statistic;
     if (stat.totalLetter <= 0) {
-        let a = domElements.errorDisplays;
-        console.log(a)
-        a.forEach((element) => {
+        updateWPM(session, domElements);
+        domElements.errorDisplays.forEach((element) => {
             element.innerHTML = 0;
         });
 
-        domElements.accuracyDisplays.forEach((element) => {
+        domElements.accuracyDisplays?.forEach((element) => {
             element.innerHTML = '100%';
         });
 
         return;
     }
 
-    domElements.errorDisplays.forEach((element) => {
+    domElements.errorDisplays?.forEach((element) => {
         element.innerHTML = stat.wrongLetter;
     });
 
-    domElements.accuracyDisplays.forEach((element) => {
+    domElements.accuracyDisplays?.forEach((element) => {
         element.innerHTML = Math.round(100 * stat.correctLetter / stat.totalLetter) + '%';
     });    
 }
-    
+
+function updateWPM(session, domElements) {
+    domElements.wpmDisplays?.forEach((element) => {
+        element.innerHTML = session.statistic.getWPM();
+    });
+}
 
 

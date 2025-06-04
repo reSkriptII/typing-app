@@ -4,20 +4,39 @@ export let session = {
         spaceAsSeperator: true,
         //TODO: stopCursorOnError,
     },
-
+    
     _targetPassage: '',
     _typedPassage: '',
     _cursorIndex: 0,
     statistic: {
+        _startTime: null,
+        _stopTime: null,
         totalLetter: 0,
         correctLetter: 0,
         wrongLetter: 0,
+        getWPM() {
+            if (!this._startTime) return 0;
+
+            let finalTime = this._stopTime ?? Date.now();
+            console.log(`timePassed: ${finalTime - this._startTime}`)
+            let timeDiffSec = (finalTime - this._startTime) / 1000;
+            console.log(timeDiffSec)
+            return Math.round((this.totalLetter / 5) / (timeDiffSec / 60));
+        }
     },
 
     setNewPassage(passage) {
         this._targetPassage = passage;
         this._typedPassage = '';
         this._cursorIndex = 0;
+    },
+
+    start() {
+        this.statistic._startTime = new Date();
+    },
+
+    stop() {
+        this.statistic._stopTime = new Date();
     },
 
     update(key) {
