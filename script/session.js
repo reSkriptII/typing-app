@@ -5,9 +5,6 @@ export let session = {
         //TODO: stopCursorOnError,
     },
     
-    _targetPassage: '',
-    _typedPassage: '',
-    _cursorIndex: 0,
     statistic: {
         _startTime: null,
         _stopTime: null,
@@ -18,16 +15,14 @@ export let session = {
             if (!this._startTime) return 0;
 
             let finalTime = this._stopTime ?? Date.now();
-            console.log(`timePassed: ${finalTime - this._startTime}`)
             let timeDiffSec = (finalTime - this._startTime) / 1000;
-            console.log(timeDiffSec)
             return Math.round((this.totalLetter / 5) / (timeDiffSec / 60));
         }
     },
 
-    setNewPassage(passage) {
-        this._targetPassage = passage;
-        this._typedPassage = '';
+    setNewPhrase(phrase) {
+        this._targetPhrase = phrase;
+        this._typedPhrase = '';
         this._cursorIndex = 0;
     },
 
@@ -41,7 +36,7 @@ export let session = {
 
     update(key) {
         console.log(key)
-        if (key === this._targetPassage[this._cursorIndex]) { // correct key
+        if (key === this._targetPhrase[this._cursorIndex]) { // correct key
             this._addTypedLetter(key, true);
 
         } else if (key === ' ') {
@@ -51,8 +46,8 @@ export let session = {
             if (!this.setting.allowBackSpace) return;
             if (this.setting.spaceAsSeperator) {
       
-                let typedWordCount = this._typedPassage.split(" ").length;
-                if (this._cursorIndex <= getWordStartIndex(typedWordCount -1, this._targetPassage)) {
+                let typedWordCount = this._typedPhrase.split(" ").length;
+                if (this._cursorIndex <= getWordStartIndex(typedWordCount -1, this._targetPhrase)) {
                     return;
                 }
             }
@@ -76,8 +71,8 @@ export let session = {
                 session._addTypedLetter('\u2423', false);
                 session._addTypedLetter(' ', true);
 
-                let typedWordCount = session._typedPassage.trim().split(' ').length;
-                let nexWordStartIndex = getWordStartIndex(typedWordCount, session._targetPassage);
+                let typedWordCount = session._typedPhrase.split(' ').length;
+                let nexWordStartIndex = getWordStartIndex(typedWordCount, session._targetPhrase);
                 session._cursorIndex = nexWordStartIndex;
             }
         }
@@ -86,16 +81,16 @@ export let session = {
     getHighlightElement() {
         let highlighted = new DocumentFragment();
 
-        if (!this._typedPassage) {
-            if (!this._targetPassage) return null;
+        if (!this._typedPhrase) {
+            if (!this._targetPhrase) return null;
 
-            appendSpan(this._targetPassage, 'untyped');
+            appendSpan(this._targetPhrase, 'untyped');
             return highlighted;
         }
 
         if (this.setting.spaceAsSeperator){
-            let targetWordList = this._targetPassage.split(' ');
-            let typedWordList = this._typedPassage.split(' ');
+            let targetWordList = this._targetPhrase.split(' ');
+            let typedWordList = this._typedPhrase.split(' ');
 
             let typedWordCount = Math.min(targetWordList.length, typedWordList.length);
 
@@ -113,7 +108,7 @@ export let session = {
             }
 
         } else {
-            appendHiglightLinear(this._typedPassage, this._targetPassage)
+            appendHiglightLinear(this._typedPhrase, this._targetPhrase)
         }
 
         return highlighted;
@@ -156,6 +151,20 @@ export let session = {
 
     },
 
+    isPhraseComplete() {
+        if (!this.setting.spaceAsSeperator) {
+            return this.statistic.totalLetter >= this._targetPhrase.length
+        }
+
+        let targetWords = this._targetPhrase.split(' ');
+        let typedWords = this._typedPhrase.split(' ');
+
+        if (targetWords.length > typedWords.length) return false;
+        if (targetWords.length < typedWords.length) return true; 
+
+        return typedWords.at(-1).length >= targetWords.at(-1).length;
+    },
+
     _addTypedLetter(key, isCorrectLetter, countStatistic=true) {
         // Error checking. Remove later
         if (key.length !== 1) {
@@ -173,7 +182,7 @@ export let session = {
         }
         
         ++this._cursorIndex;
-        this._typedPassage += key;
+        this._typedPhrase += key;
     },
 
     _deleteTypedLetter(retriveStatistic=true) {
@@ -184,8 +193,8 @@ export let session = {
         if (retriveStatistic) {
             --this.statistic.totalLetter;
 
-            let typedCharAtCursor = this._typedPassage[this._cursorIndex];
-            let targetCharAtCursor = this._targetPassage[this._cursorIndex];
+            let typedCharAtCursor = this._typedPhrase[this._cursorIndex];
+            let targetCharAtCursor = this._targetPhrase[this._cursorIndex];
             if (typedCharAtCursor === targetCharAtCursor) {
                 --this.statistic.correctLetter;
             } else {
@@ -193,6 +202,10 @@ export let session = {
             }
         }
 
-        this._typedPassage = this._typedPassage.slice(0, -1); 
+        this._typedPhrase = this._typedPhrase.slice(0, -1); 
     },
+
+    _targetPhrase: '',
+    _typedPhrase: '',
+    _cursorIndex: 0,
 }

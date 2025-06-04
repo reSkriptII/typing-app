@@ -25,7 +25,7 @@ function setupCleanState(session, domElements) {
 
     domMethod.updateStatusBar(session, domElements);
     
-    session.setNewPassage('example message that should show on div');
+    session.setNewPhrase('example message that should show on div');
     domMethod.setContent(domElements.passage ,session.getHighlightElement());
 }
 
@@ -40,11 +40,12 @@ function handleOnType(event) {
     
         domMethod.setContent(domElements.passage, session.getHighlightElement());
         domMethod.updateStatusBar(session, domElements);
-        typearea.innerHTML = session._typedPassage;
+        typearea.innerHTML = session._typedPhrase;
 
-        // if (session.isPassageComplete()) {
-        //     // TODO: session.setNewPassage();
-        // }
+        if (session.isPhraseComplete()) {
+             // TODO: session.setNewPassage();
+             alert('done')
+        }
     }
     
 }
@@ -53,7 +54,7 @@ let wpmInteval;
 function startTimer() {
     console.log('startTimer')
     session.start();
-    wpmInteval = setInterval(() => updateWPM(session, domElements), 500);
+    wpmInteval = setInterval(() => domMethod.updateWPM(session, domElements), 500);
     domElements.typearea.removeEventListener('keydown', startTimer);
 }
 
