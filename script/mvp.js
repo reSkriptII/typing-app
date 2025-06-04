@@ -1,15 +1,15 @@
 let currentPassage = ['example', 'message', 'that', 'should', 'show', 'on', 'div']; //TODO: fetch real passage
 let mode = 'lax'; //TODO
 
-let passage = document.getElementById("passage");
+let target = document.getElementById("passage");
 let typearea = document.getElementById("typearea");
 
-if (!passage || !typearea) {
+if (!target || !typearea) {
     console.error('ERROR: element not found');
 }
 
 
-passage.innerHTML = currentPassage.join(' ');
+target.innerHTML = currentPassage.join(' ');
 
 typearea.onpaste = () => false;
 // typearea.onkeydown = event => { 
@@ -31,26 +31,26 @@ function handleInput() {
             // passage.append(highlighted);
             break;
         case 'spaced':
-            passage.innerHTML = ' ';
+            target.innerHTML = ' ';
             typedWords = typedLetters.split(' ');
             for (let i = 0; i < currentPassage.length; ++i) {
                 highlighted = createHighlightElement(typedWords[i], currentPassage[i], i < typedWords.length -1);
-                passage.append(highlighted);
-                passage.append(' ');
+                target.append(highlighted);
+                target.append(' ');
             }
 
     }
     
     function handleCharMode(inputText, targetText) {
-        passage.innerHTML = '';
+        target.innerHTML = '';
 
         for (let i = 0; i < targetText.length; ++i) {
             if (i >= inputText.length) break;
             
-            passage.append(markLetter(inputText[i], targetText[i]));
+            target.append(markLetter(inputText[i], targetText[i]));
         }
 
-        passage.append(createUntypedSpan());
+        target.append(createUntypedSpan());
 
         // helper function
         function markLetter(inputLetter, targetLetter) {
