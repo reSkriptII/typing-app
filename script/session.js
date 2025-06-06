@@ -77,8 +77,9 @@ export let session = {
                 let lastTargetWordLength = session._targetPhrase.split(' ')[typedWordCount - 1].length;
 
                 if (lastTypedWordLength < lastTargetWordLength) {
-                    session._typedPhrase += "\u2423 ";
+                    session._typedPhrase += "\u2423";
                 }
+                session._typedPhrase += ' '
                 ++session.statistic.totalLetter;
                 ++session.statistic.wrongLetter;
             }
