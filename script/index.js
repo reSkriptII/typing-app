@@ -1,5 +1,6 @@
 import {session} from "./session.js";
 import { domMethod } from "./dommethod.js";
+import { word } from "./word.js";
 
 const domElements = {
     passage: document.getElementById("passage"),
@@ -18,14 +19,14 @@ domElements.typearea.addEventListener('keydown', handleOnType);
 // ************************************************************
 // helper function
 
-function setupCleanState(session, domElements) {
+async function setupCleanState(session, domElements) {
     session.statistic.totalLetter = 0;
     session.statistic.correctLetter = 0;
     session.statistic.wrongLetter = 0;
 
     domMethod.updateStatusBar(session, domElements);
     
-    session.setNewPhrase('example message that should show on div');
+    session.setNewPhrase(await word.fetchWord('/asset/word.txt'));
     domMethod.setContent(domElements.passage ,session.getHighlightElement());
 }
 
@@ -52,8 +53,8 @@ function handleOnType(event) {
 
 let wpmInteval;
 function startTimer() {
-    console.log('startTimer')
     session.start();
+    setTimeout(() => domMethod.updateWPM(session, domElements), 200)
     wpmInteval = setInterval(() => domMethod.updateWPM(session, domElements), 500);
     domElements.typearea.removeEventListener('keydown', startTimer);
 }

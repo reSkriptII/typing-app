@@ -35,12 +35,12 @@ export let session = {
     },
 
     update(key) {
-        console.log(key)
+        console.log(this._cursorIndex)
         if (key === this._targetPhrase[this._cursorIndex]) { // correct key
             this._addTypedLetter(key, true);
 
         } else if (key === ' ') {
-            handleSpace(this);
+            handleWrongSpace(this);
 
         } else if (key === "Backspace") {
             if (!this.setting.allowBackSpace) return;
@@ -63,17 +63,24 @@ export let session = {
             return passage.indexOf(wordList[nthWord]);
         }
 
-        function handleSpace(session) {
+        function handleWrongSpace(session) {
             if (!session.setting.spaceAsSeperator) {
                 session._addTypedLetter(' ', false);
                 return;
             } else {
-                session._addTypedLetter('\u2423', false);
-                session._addTypedLetter(' ', true);
-
-                let typedWordCount = session._typedPhrase.split(' ').length;
+                let typedWord = session._typedPhrase.split(' ');
+                let typedWordCount = typedWord.length;
                 let nexWordStartIndex = getWordStartIndex(typedWordCount, session._targetPhrase);
                 session._cursorIndex = nexWordStartIndex;
+
+                let lastTypedWordLength = typedWord[typedWordCount - 1].length;
+                let lastTargetWordLength = session._targetPhrase.split(' ')[typedWordCount - 1].length;
+
+                if (lastTypedWordLength < lastTargetWordLength) {
+                    session._typedPhrase += "\u2423 ";
+                }
+                ++session.statistic.totalLetter;
+                ++session.statistic.wrongLetter;
             }
         }
     },
