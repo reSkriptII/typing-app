@@ -9,8 +9,9 @@ const domElements = {
     errorDisplays: document.querySelectorAll('.error-display'),
     wpmDisplays: document.querySelectorAll('.wpm-display'),
 }
+let phraseLength = 10;
 
-setupCleanState(session, domElements);
+setupCleanState(session, domElements, '/asset/word.txt');
 
 domElements.typearea.onpaste = () => false;
 domElements.typearea.addEventListener('keydown', startTimer);
@@ -19,14 +20,15 @@ domElements.typearea.addEventListener('keydown', handleOnType);
 // ************************************************************
 // helper function
 
-async function setupCleanState(session, domElements) {
+async function setupCleanState(session, domElements, filePath) {
     session.statistic.totalLetter = 0;
     session.statistic.correctLetter = 0;
     session.statistic.wrongLetter = 0;
 
     domMethod.updateStatusBar(session, domElements);
-    
-    session.setNewPhrase(await word.fetchWord('/asset/word.txt'));
+
+    await word.loadFrom(filePath);
+    session.setNewPhrase(word.getNextText(phraseLength));
     domMethod.setContent(domElements.passage ,session.getHighlightElement());
 }
 
@@ -37,16 +39,23 @@ function handleOnType(event) {
     }
 
     if(key.length === 1 || key === 'Backspace')  {
-        session.update(event.key);
+        console.log(key)
+        if (event.key === ' ' && session.isLastOfPhrase()) {
+            if (word.isEndOfDict()) {
+                alert('done')
+            } else {
+                session.setNewPhrase(word.getNextText(phraseLength))
+            }
+             
+        } else {
+            session.update(event.key);
+        }
     
         domMethod.setContent(domElements.passage, session.getHighlightElement());
         domMethod.updateStatusBar(session, domElements);
         typearea.innerHTML = session._typedPhrase;
 
-        if (session.isPhraseComplete()) {
-             // TODO: session.setNewPassage();
-             alert('done')
-        }
+        
     }
     
 }

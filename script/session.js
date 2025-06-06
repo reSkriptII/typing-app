@@ -158,7 +158,7 @@ export let session = {
 
     },
 
-    isPhraseComplete() {
+    isLastOfPhrase() {
         if (!this.setting.spaceAsSeperator) {
             return this.statistic.totalLetter >= this._targetPhrase.length
         }
@@ -166,10 +166,7 @@ export let session = {
         let targetWords = this._targetPhrase.split(' ');
         let typedWords = this._typedPhrase.split(' ');
 
-        if (targetWords.length > typedWords.length) return false;
-        if (targetWords.length < typedWords.length) return true; 
-
-        return typedWords.at(-1).length >= targetWords.at(-1).length;
+        if (targetWords.length <= typedWords.length) return true; 
     },
 
     _addTypedLetter(key, isCorrectLetter, countStatistic=true) {
