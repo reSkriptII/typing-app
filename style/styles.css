@@ -1,30 +1,45 @@
+@import url("./theme.css");
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    /* border: 1px solid #00ffff; */
+}
+
 body {
     height: 100vh;
     margin: 0;
     padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
-#status-bar {
+.status-bar {
+    margin: auto;
+    padding: 10px;
     width: 80%;
-    height: 1.2em;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    flex-flow: column;
+    flex-flow: row;
+    background-color: var(--accent-surface-color);
+    color: var(--text-color);
 }
 
 .card {
     display: inline-block;
     width: 20%;
-    
+    text-align: center;
 }
 
 #passage {
     display: block;
-    margin: auto;
-    padding: 20px 10px;
+    margin: 20vh auto 10vh;
+    padding: 30px 10px;
     width: 80%;
-    height: auto;
+    height: 8rem;
+    font-size: 2.6rem;
 }
 
 #typearea {
@@ -32,12 +47,14 @@ body {
     margin: auto;
     padding: 20px 10px;
     width: 80%;
-    height: auto;
-    border: 1px solid black;
+    height: 24vh;
+    background-color: var(--accent-surface-color);
+    border: 1px solid gray;
+    font-size: 1.5rem;
 }
 
 #typearea:focus {
-    border: 1px solid gray;
+    border: 2px solid var(--accent-color);
 }
 
 .correct {
@@ -46,4 +63,13 @@ body {
 
 .wrong {
     color: brown;
+}
+
+.untyped {
+    color: var(--text-color);
+}
+
+.current {
+    color: var(--accent-color);
+    background-color: var(--accent-surface-color);
 }

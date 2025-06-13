@@ -91,8 +91,8 @@ export let session = {
 
         if (!this._typedPhrase) {
             if (!this._targetPhrase) return null;
-
-            appendSpan(this._targetPhrase, 'untyped');
+            appendSpan(this._targetPhrase[0], 'untyped current')
+            appendSpan(this._targetPhrase.slice(1), 'untyped');
             return highlighted;
         }
 
@@ -109,7 +109,13 @@ export let session = {
             }
 
             // highlight current word
+
             appendHiglightLinear(typedWordList[typedWordCount - 1], targetWordList[typedWordCount - 1]);
+            
+            // if next charactor is space
+            if (typedWordList[typedWordCount - 1].length >= targetWordList[typedWordCount - 1].length) {
+                appendSpan(' ', 'untyped current')
+            }
 
             if (typedWordCount < targetWordList.length) {
                 appendSpan(' ' + targetWordList.slice(typedWordCount).join(' '), 'untyped')
