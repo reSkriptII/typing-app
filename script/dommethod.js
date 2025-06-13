@@ -1,4 +1,28 @@
+import { word } from "./word.js";
+
+export const domElements = {
+    passage: document.getElementById("passage"),
+    typearea: document.getElementById("typearea"),
+    accuracyDisplays: document.querySelectorAll('.accuracy-display'),
+    errorDisplays: document.querySelectorAll('.error-display'),
+    wpmDisplays: document.querySelectorAll('.wpm-display'),
+}
+
+
 export let domMethod = {
+
+    async setCleanState(session, domElements, filePath) {
+        session.statistic.totalLetter = 0;
+        session.statistic.correctLetter = 0;
+        session.statistic.wrongLetter = 0;
+
+        domMethod.updateStatusBar(session, domElements);
+
+        await word.loadFrom(filePath);
+        session.setNewPhrase(word.getNextText(word.setting.wordPerStream));
+        domMethod.setContent(domElements.passage ,session.getHighlightElement());
+    },
+
     setContent(target, documentFragment) {
         target.innerHTML = '';
         target.append(documentFragment);

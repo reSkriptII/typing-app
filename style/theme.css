@@ -4,6 +4,9 @@
     --text-color: #1e1e1e;
     --accent-color: #000;
     --highlight-color-wrong: #f00;
+    --highlight-color-correct: #0f0;
+    --highlight-color-current: #ff0;
+    --muted-text-color: #666;
 }
 
 [data-theme="dark"] {
@@ -15,4 +18,7 @@
     --text-color: #e0e0e0;
     --accent-color: #fff;
     --highlight-color-wrong: #af3434;
+    --highlight-color-correct: #006800;
+    --highlight-color-current: #edb926;
+    --muted-text-color: #a0a0a0;
 }

@@ -1,17 +1,9 @@
-import {session} from "./session.js";
-import { domMethod } from "./dommethod.js";
+import { session } from "./session.js";
+import { domMethod, domElements } from "./dommethod.js";
 import { word } from "./word.js";
 
-const domElements = {
-    passage: document.getElementById("passage"),
-    typearea: document.getElementById("typearea"),
-    accuracyDisplays: document.querySelectorAll('.accuracy-display'),
-    errorDisplays: document.querySelectorAll('.error-display'),
-    wpmDisplays: document.querySelectorAll('.wpm-display'),
-}
-let phraseLength = 10;
 
-setupCleanState(session, domElements, '/asset/word.json');
+domMethod.setCleanState(session, domElements, '/asset/word.json');
 
 domElements.typearea.onpaste = () => false;
 domElements.typearea.addEventListener('keydown', startTimer);
@@ -20,17 +12,7 @@ domElements.typearea.addEventListener('keydown', handleOnType);
 // ************************************************************
 // helper function
 
-async function setupCleanState(session, domElements, filePath) {
-    session.statistic.totalLetter = 0;
-    session.statistic.correctLetter = 0;
-    session.statistic.wrongLetter = 0;
 
-    domMethod.updateStatusBar(session, domElements);
-
-    await word.loadFrom(filePath);
-    session.setNewPhrase(word.getNextText(phraseLength));
-    domMethod.setContent(domElements.passage ,session.getHighlightElement());
-}
 
 function handleOnType(event) {
     let key = event.key;
@@ -54,8 +36,6 @@ function handleOnType(event) {
         domMethod.setContent(domElements.passage, session.getHighlightElement());
         domMethod.updateStatusBar(session, domElements);
         typearea.innerHTML = session._typedPhrase;
-
-        
     }
     
 }
