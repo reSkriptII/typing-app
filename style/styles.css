@@ -13,10 +13,11 @@ body {
     padding: 0;
     background-color: var(--background-color);
     color: var(--text-color);
+    overflow: hidden;
 }
 
-.status-bar {
-    margin: auto;
+.status-bar, .setting-bar {
+    margin: 5px auto;
     padding: 10px;
     width: 80%;
     display: flex;
@@ -33,9 +34,10 @@ body {
     text-align: center;
 }
 
+
 #passage {
     display: block;
-    margin: 20vh auto 10vh;
+    margin: 10vh auto 10vh;
     padding: 30px 10px;
     width: 80%;
     height: 8rem;
