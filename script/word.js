@@ -8,12 +8,12 @@ export let word = {
         let excludedLetter = this.setting.excludedLetter;
         try {
             let file = await fetch(path);
-            let text = await file.text();
+            let wordList = await file.json();
 
             // just found this line hilarious lengthly
             //this._dictinary = text.split(' ').filter((word) => [...word].some((char) => this.setting.excludeLetter.has(char)))
             
-            this._dictinary = text.split(' ').filter(notContainExcludedLetter);
+            this._dictinary = wordList.filter(notContainExcludedLetter);
             return true;
         } catch(error) {
             console.log(error);

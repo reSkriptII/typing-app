@@ -11,7 +11,7 @@ const domElements = {
 }
 let phraseLength = 10;
 
-setupCleanState(session, domElements, '/asset/word.txt');
+setupCleanState(session, domElements, '/asset/word.json');
 
 domElements.typearea.onpaste = () => false;
 domElements.typearea.addEventListener('keydown', startTimer);
