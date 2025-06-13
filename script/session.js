@@ -1,6 +1,6 @@
 export let session = {
     setting: {
-        allowBackSpace: true,
+        allowBackspace: true,
         spaceAsSeperator: true,
         //TODO: stopCursorOnError,
     },
@@ -43,7 +43,7 @@ export let session = {
             handleWrongSpace(this);
 
         } else if (key === "Backspace") {
-            if (!this.setting.allowBackSpace) return;
+            if (!this.setting.allowBackspace) return;
             if (this.setting.spaceAsSeperator) {
       
                 let typedWordCount = this._typedPhrase.split(" ").length;
@@ -219,4 +219,5 @@ export let session = {
     _targetPhrase: '',
     _typedPhrase: '',
     _cursorIndex: 0,
+    filePath: '/asset/word.json',
 }

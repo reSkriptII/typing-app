@@ -12,8 +12,6 @@ domElements.typearea.addEventListener('keydown', handleOnType);
 // ************************************************************
 // helper function
 
-
-
 function handleOnType(event) {
     let key = event.key;
     if (key in ['Control', 'Alt', 'Shift', 'Meta']) {
@@ -26,7 +24,7 @@ function handleOnType(event) {
             if (word.isEndOfDict()) {
                 alert('done')
             } else {
-                session.setNewPhrase(word.getNextText(phraseLength))
+                session.setNewPhrase(word.getNextText(word.setting.wordPerStream))
             }
              
         } else {

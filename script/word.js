@@ -2,6 +2,7 @@ export let word = {
     setting: {
         excludedLetter: new Set(),
         wordPerStream: 10,
+        shuffle: false,
     },
 
     async loadFrom(path) {

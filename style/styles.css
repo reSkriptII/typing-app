@@ -1,8 +1,5 @@
 @import url("./theme.css");
-@font-face {
-    font-family: roboto;
-    src: url(./font/roboto-v48-latin-regular.woff2);
-}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -17,7 +14,7 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
     overflow: hidden;
-    font-family: roboto, monospace;
+    font-family: monospace;
 }
 
 .status-bar, .setting-bar {
@@ -32,12 +29,31 @@ body {
     color: var(--text-color);
 }
 
+#includeletter {
+    width: 40%;
+}
+
 .card {
     display: inline-block;
     width: 30%;
     text-align: center;
 }
 
+.letter-toggle {
+    font-size: 1.2rem;
+    font-family: monospace;
+    width: 25px;
+    height: 25px;
+    background-color: var(--background-color);
+}
+
+.letter-toggle[data-status="set"] {
+    color: var(--accent-color);
+}
+
+.letter-toggle[data-status="unset"] {
+    color: var(--muted-text-color);
+}
 
 #passage {
     display: block;
@@ -45,7 +61,7 @@ body {
     padding: 30px 10px;
     width: 80%;
     height: 8rem;
-    font-size: 2.6rem;
+    font-size: 2.4rem;
 }
 
 #typearea {
@@ -66,7 +82,6 @@ body {
 .correct {
     background-color: var(--highlight-color-correct);
 }
-
 
 .correct, .wrong {
     color: var(--muted-text-color);

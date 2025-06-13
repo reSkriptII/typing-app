@@ -8,7 +8,6 @@ export const domElements = {
     wpmDisplays: document.querySelectorAll('.wpm-display'),
 }
 
-
 export let domMethod = {
 
     async setCleanState(session, domElements, filePath) {
@@ -17,6 +16,7 @@ export let domMethod = {
         session.statistic.wrongLetter = 0;
 
         domMethod.updateStatusBar(session, domElements);
+        domElements.typearea.innerHTML = '';
 
         await word.loadFrom(filePath);
         session.setNewPhrase(word.getNextText(word.setting.wordPerStream));
