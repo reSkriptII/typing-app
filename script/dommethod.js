@@ -3,9 +3,9 @@ import { word } from "./word.js";
 export const domElements = {
     passage: document.getElementById("passage"),
     typearea: document.getElementById("typearea"),
-    accuracyDisplays: document.querySelectorAll('.accuracy-display'),
-    errorDisplays: document.querySelectorAll('.error-display'),
-    wpmDisplays: document.querySelectorAll('.wpm-display'),
+    accuracyDisplays: document.querySelectorAll(".accuracy-display"),
+    errorDisplays: document.querySelectorAll(".error-display"),
+    wpmDisplays: document.querySelectorAll(".wpm-display"),
 }
 
 export let domMethod = {
@@ -16,7 +16,7 @@ export let domMethod = {
         session.statistic.wrongLetter = 0;
 
         domMethod.updateStatusBar(session, domElements);
-        domElements.typearea.innerHTML = '';
+        domElements.typearea.innerHTML = "";
 
         await word.loadFrom(filePath);
         session.setNewPhrase(word.getNextText(word.setting.wordPerStream));
@@ -24,7 +24,7 @@ export let domMethod = {
     },
 
     setContent(target, documentFragment) {
-        target.innerHTML = '';
+        target.innerHTML = "";
         target.append(documentFragment);
     },
 
@@ -37,7 +37,7 @@ export let domMethod = {
             });
 
             domElements.accuracyDisplays?.forEach((element) => {
-                element.innerHTML = '100%';
+                element.innerHTML = "100%";
             });
 
             return;
@@ -48,7 +48,7 @@ export let domMethod = {
         });
 
         domElements.accuracyDisplays?.forEach((element) => {
-            element.innerHTML = Math.round(100 * stat.correctLetter / stat.totalLetter) + '%';
+            element.innerHTML = Math.round(100 * stat.correctLetter / stat.totalLetter) + "%";
         });    
     },
 

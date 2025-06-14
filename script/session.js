@@ -219,5 +219,5 @@ export let session = {
     _targetPhrase: "",
     _typedPhrase: "",
     _cursorIndex: 0,
-    filePath: "/asset/word.json",
+    filePath: "./asset/word.json",
 }

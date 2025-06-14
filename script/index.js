@@ -3,7 +3,7 @@ import { domMethod, domElements } from "./dommethod.js";
 import { word } from "./word.js";
 
 
-domMethod.setCleanState(session, domElements, "/asset/word.json");
+domMethod.setCleanState(session, domElements, session.filePath);
 
 domElements.typearea.onpaste = () => false;
 domElements.typearea.addEventListener("keydown", startTimer);
