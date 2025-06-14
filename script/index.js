@@ -3,26 +3,27 @@ import { domMethod, domElements } from "./dommethod.js";
 import { word } from "./word.js";
 
 
-domMethod.setCleanState(session, domElements, '/asset/word.json');
+domMethod.setCleanState(session, domElements, "/asset/word.json");
 
 domElements.typearea.onpaste = () => false;
-domElements.typearea.addEventListener('keydown', startTimer);
-domElements.typearea.addEventListener('keydown', handleOnType);
+domElements.typearea.addEventListener("keydown", startTimer);
+domElements.typearea.addEventListener("keydown", handleOnType);
 
 // ************************************************************
 // helper function
 
-function handleOnType(event) {
+async function handleOnType(event) {
     let key = event.key;
-    if (key in ['Control', 'Alt', 'Shift', 'Meta']) {
+    if (key in ["Control", "Alt", "Shift", "Meta"]) {
         return;
     }
 
-    if(key.length === 1 || key === 'Backspace')  {
+    if(key.length === 1 || key === "Backspace")  {
         console.log(key)
-        if (event.key === ' ' && session.isLastOfPhrase()) {
+        if (event.key === " " && session.isLastOfPhrase()) {
             if (word.isEndOfDict()) {
-                alert('done')
+                await word.loadFrom(session.filePath);
+                session.setNewPhrase(word.getNextText(word.setting.wordPerStream))
             } else {
                 session.setNewPhrase(word.getNextText(word.setting.wordPerStream))
             }
@@ -43,6 +44,6 @@ function startTimer() {
     session.start();
     setTimeout(() => domMethod.updateWPM(session, domElements), 200)
     wpmInteval = setInterval(() => domMethod.updateWPM(session, domElements), 500);
-    domElements.typearea.removeEventListener('keydown', startTimer);
+    domElements.typearea.removeEventListener("keydown", startTimer);
 }
 
