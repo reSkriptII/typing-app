@@ -53,7 +53,17 @@ body {
 
 .letter-toggle[data-status="unset"] {
     color: var(--muted-text-color);
+    background-color: var(--accent-surface-color);
 }
+
+#darkmode-toggle {
+    font-size: 1.2rem;
+    background-color: var(--background-color);
+    height: 35px;
+    width: 35px;
+    color: var(--text-color);
+}
+
 
 #passage {
     display: block;
@@ -73,6 +83,7 @@ body {
     background-color: var(--accent-surface-color);
     border: 1px solid gray;
     font-size: 1.5rem;
+    overflow-wrap: break-word;
 }
 
 #typearea:focus {

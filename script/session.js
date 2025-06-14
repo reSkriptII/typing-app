@@ -22,7 +22,7 @@ export let session = {
 
     setNewPhrase(phrase) {
         this._targetPhrase = phrase;
-        this._typedPhrase = '';
+        this._typedPhrase = "";
         this._cursorIndex = 0;
     },
 
@@ -39,7 +39,7 @@ export let session = {
         if (key === this._targetPhrase[this._cursorIndex]) { // correct key
             this._addTypedLetter(key, true);
 
-        } else if (key === ' ') {
+        } else if (key === " ") {
             handleWrongSpace(this);
 
         } else if (key === "Backspace") {
@@ -59,27 +59,27 @@ export let session = {
         }
 
         function getWordStartIndex(nthWord, passage) {
-            let wordList = passage.trim().split(' ');
+            let wordList = passage.trim().split(" ");
             return passage.indexOf(wordList[nthWord]);
         }
 
         function handleWrongSpace(session) {
             if (!session.setting.spaceAsSeperator) {
-                session._addTypedLetter(' ', false);
+                session._addTypedLetter(" ", false);
                 return;
             } else {
-                let typedWord = session._typedPhrase.split(' ');
+                let typedWord = session._typedPhrase.split(" ");
                 let typedWordCount = typedWord.length;
                 let nexWordStartIndex = getWordStartIndex(typedWordCount, session._targetPhrase);
                 session._cursorIndex = nexWordStartIndex;
 
                 let lastTypedWordLength = typedWord[typedWordCount - 1].length;
-                let lastTargetWordLength = session._targetPhrase.split(' ')[typedWordCount - 1].length;
+                let lastTargetWordLength = session._targetPhrase.split(" ")[typedWordCount - 1].length;
 
                 if (lastTypedWordLength < lastTargetWordLength) {
                     session._typedPhrase += "\u2423";
                 }
-                session._typedPhrase += ' '
+                session._typedPhrase += " "
                 ++session.statistic.totalLetter;
                 ++session.statistic.wrongLetter;
             }
@@ -91,21 +91,21 @@ export let session = {
 
         if (!this._typedPhrase) {
             if (!this._targetPhrase) return null;
-            appendSpan(this._targetPhrase[0], 'untyped current')
-            appendSpan(this._targetPhrase.slice(1), 'untyped');
+            appendSpan(this._targetPhrase[0], "untyped current")
+            appendSpan(this._targetPhrase.slice(1), "untyped");
             return highlighted;
         }
 
         if (this.setting.spaceAsSeperator){
-            let targetWordList = this._targetPhrase.split(' ');
-            let typedWordList = this._typedPhrase.split(' ');
+            let targetWordList = this._targetPhrase.split(" ");
+            let typedWordList = this._typedPhrase.split(" ");
 
             let typedWordCount = Math.min(targetWordList.length, typedWordList.length);
 
             // highlight words before current
             for (let i = 0; i < typedWordCount - 1; ++i) {
                 appendHiglightLinear(typedWordList[i], targetWordList[i], true);
-                appendSpan(' ', 'correct');
+                appendSpan(" ", "correct");
             }
 
             // highlight current word
@@ -114,11 +114,11 @@ export let session = {
             
             // if next charactor is space
             if (typedWordList[typedWordCount - 1].length >= targetWordList[typedWordCount - 1].length) {
-                appendSpan(' ', 'untyped current')
+                appendSpan(" ", "untyped current")
             }
 
             if (typedWordCount < targetWordList.length) {
-                appendSpan(' ' + targetWordList.slice(typedWordCount).join(' '), 'untyped')
+                appendSpan(" " + targetWordList.slice(typedWordCount).join(" "), "untyped")
             }
 
         } else {
@@ -135,19 +135,19 @@ export let session = {
                 let typedLetter = typedPassage[i];
                 let targetLetter = targetPassage[i];
                 if (typedLetter === targetLetter) {
-                    appendSpan(targetLetter, 'correct');
+                    appendSpan(targetLetter, "correct");
                 } else {
-                    appendSpan(targetLetter, 'wrong');
+                    appendSpan(targetLetter, "wrong");
                 }
             }
 
             if (typedLetterCount < targetPassage.length) {
                 if (markMissedAsWrong) {
-                    appendSpan(targetPassage.slice(typedLetterCount), 'wrong');
+                    appendSpan(targetPassage.slice(typedLetterCount), "wrong");
                 } else {
-                    appendSpan(targetPassage[typedLetterCount], 'untyped current');
+                    appendSpan(targetPassage[typedLetterCount], "untyped current");
                     if (targetPassage.length > typedLetterCount + 1) {
-                        appendSpan(targetPassage.slice(typedLetterCount + 1), 'untyped');
+                        appendSpan(targetPassage.slice(typedLetterCount + 1), "untyped");
                     }
                     
                 }
@@ -156,7 +156,7 @@ export let session = {
         }
 
         function appendSpan(content, className) {
-            let span = document.createElement('span');
+            let span = document.createElement("span");
             span.className = className;
             span.textContent = content;
 
@@ -167,11 +167,11 @@ export let session = {
 
     isLastOfPhrase() {
         if (!this.setting.spaceAsSeperator) {
-            return this.statistic.totalLetter >= this._targetPhrase.length
+            return this._cursorIndex >= this._targetPhrase.length
         }
 
-        let targetWords = this._targetPhrase.split(' ');
-        let typedWords = this._typedPhrase.split(' ');
+        let targetWords = this._targetPhrase.split(" ");
+        let typedWords = this._typedPhrase.split(" ");
 
         if (targetWords.length <= typedWords.length) return true; 
     },
@@ -216,8 +216,8 @@ export let session = {
         this._typedPhrase = this._typedPhrase.slice(0, -1); 
     },
 
-    _targetPhrase: '',
-    _typedPhrase: '',
+    _targetPhrase: "",
+    _typedPhrase: "",
     _cursorIndex: 0,
-    filePath: '/asset/word.json',
+    filePath: "/asset/word.json",
 }

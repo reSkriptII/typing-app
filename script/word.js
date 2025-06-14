@@ -12,6 +12,9 @@ export let word = {
             let wordList = await file.json();
             
             this._dictinary = wordList.filter(notContainExcludedLetter);
+            if (this.setting.shuffle) {
+                shuffle(this._dictinary);
+            }
             this._nextWordIndex = 0;
             return true;
         } catch(error) {
@@ -24,6 +27,15 @@ export let word = {
                 if (excludedLetter.has(char)) return false;
             }
             return true;
+        }
+
+        function shuffle(arr) {
+            console.log(arr)
+            for (let i = arr.length - 1; i > 0; --i) {
+                console.log(i)
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
         }
     },
 
